@@ -18,29 +18,17 @@ function getClientInfo() {
     "name": SV.T(SCRIPT_TITLE),
     "category": "Claire's Scripts - Hotkey Scripts",
     "author": "https://github.com/claire-west/svstudio-scripts",
-    "versionNumber": 1,
+    "versionNumber": 2,
     "minEditorVersion": 65537
   }
 }
 
 function scrollToNote(note) {
-  var viewport = SV.getMainEditor().getNavigation();
-
-  if (SCROLL_H) {
-    var onset = note.getOnset();
-    var distanceToMiddle = (note.getEnd() - onset) / 2;
-    var viewportRange = viewport.getTimeViewRange();
-    var viewportWidth = viewportRange[1] - viewportRange[0];
-    var targetLeft = onset + distanceToMiddle - (viewportWidth / 2);
-    if (targetLeft < 0) {
-      targetLeft = 0;
-    }
-    viewport.setTimeLeft(targetLeft);
-  }
-
-  if (SCROLL_V) {
-    viewport.setValueCenter(note.getPitch() + OFFSET_V);
-  }
+  lib.scrollToNote(note, {
+    SCROLL_H: SCROLL_H,
+    SCROLL_V: SCROLL_V,
+    OFFSET_V: OFFSET_V
+  });
 }
 
 function findNextWithPhonemes() {
@@ -85,3 +73,5 @@ function main() {
   findNextWithPhonemes();
   SV.finish();
 }
+
+@@scrollToNote

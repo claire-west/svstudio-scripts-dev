@@ -69,7 +69,7 @@ function scrollToNote(note) {
   lib.scrollToNote(note, {
     SCROLL_V: SCROLL_V,
     OFFSET_V: OFFSET_V
-  })
+  });
 }
 
 function findLyric(answers) {
