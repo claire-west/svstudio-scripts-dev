@@ -27,10 +27,16 @@ module.exports = function(grunt) {
       }
     },
     copy: {
-      files: {
+      dev: {
         cwd: 'build',
         src: '**/*',
         dest: '../svstudio-scripts',
+        expand: true
+      },
+      deploy: {
+        cwd: 'build',
+        src: '**/*',
+        dest: 'deploy',
         expand: true
       }
     },
@@ -49,6 +55,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-zip');
   grunt.registerTask('default', [
-    'clean:build', 'uglify', 'inject_reuse', 'copy', 'clean:release_zip', 'zip', 'clean:build'
+    'clean:build', 'uglify', 'inject_reuse', 'copy:dev', 'clean:release_zip', 'zip', 'clean:build'
+  ]);
+  grunt.registerTask('deploy', [
+    'clean:build', 'uglify', 'inject_reuse', 'copy:deploy', 'clean:build'
   ]);
 };

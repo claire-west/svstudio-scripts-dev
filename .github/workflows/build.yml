@@ -1,0 +1,35 @@
+name: build and push to main repo
+
+# only run on changes to main
+on:
+  push:
+    branches: [ main ]
+
+concurrency: # prevent concurrent deploys doing strange things
+  group: build-and-push
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: lts/*
+    - name: Install deps and build
+      run: |
+        npm i
+        grunt deploy
+    - name: Pushes to another repository
+      uses: cpina/github-action-push-to-another-repository@main
+      env:
+        SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+      with:
+        source-directory: 'deploy'
+        destination-github-username: 'claire-west'
+        destination-repository-name: 'test'
+        user-email: bokthaku@gmail.com
+        target-branch: main
