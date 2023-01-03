@@ -30,6 +30,6 @@ jobs:
       with:
         source-directory: 'deploy'
         destination-github-username: 'claire-west'
-        destination-repository-name: 'test'
+        destination-repository-name: 'svstudio-scripts'
         user-email: bokthaku@gmail.com
         target-branch: main
