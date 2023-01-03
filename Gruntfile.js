@@ -26,6 +26,16 @@ module.exports = function(grunt) {
         expand: true
       }
     },
+    make_index: {
+      options: {
+        template: 'index.html',
+        dest: 'deploy'
+      },
+      files: {
+        src: ['automation/*', 'hotkey-scripts/*', 'long-running/*', 'utility/*'],
+        expand: true
+      }
+    },
     copy: {
       dev: {
         cwd: 'build',
@@ -58,6 +68,6 @@ module.exports = function(grunt) {
     'clean:build', 'uglify', 'inject_reuse', 'copy:dev', 'clean:release_zip', 'zip', 'clean:build'
   ]);
   grunt.registerTask('deploy', [
-    'clean:build', 'uglify', 'inject_reuse', 'copy:deploy', 'clean:build'
+    'clean:build', 'uglify', 'inject_reuse', 'make_index', 'copy:deploy', 'clean:build'
   ]);
 };
