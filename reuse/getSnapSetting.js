@@ -5,4 +5,4 @@ lib.getSnapSetting = function() {
     blicks = viewport.snap(blicks + i);
   }
   return blicks;
-}
+};
