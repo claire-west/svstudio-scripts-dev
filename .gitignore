@@ -3,3 +3,4 @@ node_modules
 build
 
 cw_svstudio-scripts_*.zip
+deploy/index.html

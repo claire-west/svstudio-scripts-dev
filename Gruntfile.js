@@ -7,6 +7,9 @@ module.exports = function(grunt) {
       },
       release_zip:  {
         src: ['cw_svstudio-scripts_*.zip']
+      },
+      deploy: {
+        src: ['deploy/automation', 'deploy/hotkey-scripts/*', '!deploy/hotkey-scripts/README.md', 'deploy/long-running', 'deploy/utility']
       }
     },
     uglify: {
@@ -50,6 +53,13 @@ module.exports = function(grunt) {
         expand: true
       }
     },
+    prune_deprecated: {
+      prune: {
+        cwd: 'build',
+        src: '**/*.js',
+        expand: true
+      }
+    },
     zip: {
       release_zip: {
         cwd: 'build',
@@ -65,9 +75,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-zip');
   grunt.registerTask('default', [
-    'clean:build', 'uglify', 'inject_reuse', 'copy:dev', 'clean:release_zip', 'zip', 'clean:build'
+    'clean:build', 'uglify', 'inject_reuse', 'copy:dev', 'clean:release_zip', 'prune_deprecated', 'zip', 'clean:build'
   ]);
   grunt.registerTask('deploy', [
     'clean:build', 'uglify', 'inject_reuse', 'make_index', 'copy:deploy', 'clean:build'
+  ]);
+  // generate index.html locally for testing
+  grunt.registerTask('test_deploy', [
+    'clean:build', 'uglify', 'inject_reuse', 'make_index', 'copy:deploy', 'clean:build', 'clean:deploy'
   ]);
 };

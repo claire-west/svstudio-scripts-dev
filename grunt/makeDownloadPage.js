@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
   var isWindows = process.platform === 'win32';
   var regex = /SCRIPT_TITLE ?= ?[\'\"](.*)[\'\"]/g;
+  var deprecatedRegex = /\/\/ (deprecated as of \d.\d.\d)/;
 
   grunt.registerMultiTask('make_index', 'Builds the index.html download page', function() {
     var ns = this.options().namespace;
@@ -26,8 +27,21 @@ module.exports = function(grunt) {
         var fileParts = src.split('/');
         var folder = fileParts[0];
         var file = fileParts[1];
+
+        var match = fileContent.match(deprecatedRegex);
+        var suffix;
+        if (match) {
+          folder = 'deprecated';
+          suffix = match[1];
+        }
+
         inject[folder] = inject[folder] || [];
-        inject[folder].push('<p><b>' + scriptName + '</b> - <i><a href="/svstudio-scripts/' + src + '" download="' + file + '">' + file + '</a></i><p>');
+        var item = '<p><b>' + scriptName + '</b> - <i><a href="/svstudio-scripts/' + src + '" download="' + file + '">' + file + '</a></i>';
+        if (suffix) {
+          item += '<span>&nbsp;&nbsp;(' + suffix + ')</span>';
+        }
+        item += '</p>';
+        inject[folder].push(item);
       });
     });
     var content = grunt.file.read(template);
