@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         src: ['cw_svstudio-scripts_*.zip']
       },
       deploy: {
-        src: ['deploy/automation', 'deploy/hotkey-scripts/*', '!deploy/hotkey-scripts/README.md', 'deploy/long-running', 'deploy/utility']
+        src: ['deploy/automation', 'deploy/hotkey-scripts/*', '!deploy/hotkey-scripts/README.md', 'deploy/utility']
       }
     },
     uglify: {
@@ -25,7 +25,7 @@ module.exports = function(grunt) {
         dest: 'build'
       },
       files: {
-        src: ['automation/*', 'hotkey-scripts/*', 'long-running/*', 'utility/*'],
+        src: ['automation/*', 'hotkey-scripts/*', 'utility/*'],
         expand: true
       }
     },
@@ -35,7 +35,7 @@ module.exports = function(grunt) {
         dest: 'deploy'
       },
       files: {
-        src: ['automation/*', 'hotkey-scripts/*', 'long-running/*', 'utility/*'],
+        src: ['automation/*', 'hotkey-scripts/*', 'utility/*'],
         expand: true
       }
     },
