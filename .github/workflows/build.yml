@@ -1,4 +1,4 @@
-name: build and push to main repo
+name: build, push, and release to main repo
 
 # only run on changes to main
 on:
@@ -12,13 +12,13 @@ concurrency: # prevent concurrent deploys doing strange things
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js
       uses: actions/setup-node@v3
       with:
         node-version: lts/*
+
     - name: Install deps and build
       run: |
         npm i
@@ -33,3 +33,27 @@ jobs:
         destination-repository-name: 'svstudio-scripts'
         user-email: bokthaku@gmail.com
         target-branch: main
+
+    - id: changed-files
+      uses: tj-actions/changed-files@v35
+    - id: changed-files-specific
+      uses: tj-actions/changed-files@v35
+      with:
+        since_last_remote_commit: true
+        files: |
+          automation/**
+          hotkey-scripts/**
+          utility/**
+    - if: steps.changed-files-specific.outputs.any_changed == 'true'
+      run: |
+        echo "Files changed in this release: ${{ steps.changed-files-specific.outputs.all_changed_files }}" > ${{ github.workspace }}-CHANGELOG.txt
+
+    - name: Release archive
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: latest
+        repository: claire-west/svstudio-scripts
+        token: ${{ secrets.RELEASE_PAT }}
+        body_path: ${{ github.workspace }}-CHANGELOG.txt
+        files: |
+          cw-svstudio-scripts.zip

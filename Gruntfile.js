@@ -61,7 +61,12 @@ module.exports = function(grunt) {
       }
     },
     zip: {
-      release_zip: {
+      release: {
+        cwd: 'build',
+        src: '**/*',
+        dest: 'cw-svstudio-scripts.zip'
+      },
+      dated: {
         cwd: 'build',
         src: '**/*',
         dest: 'cw_svstudio-scripts_' + grunt.template.today('yymmdd') + '.zip'
@@ -75,10 +80,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-zip');
   grunt.registerTask('default', [
-    'clean:build', 'uglify', 'inject_reuse', 'copy:dev', 'clean:release_zip', 'prune_deprecated', 'zip', 'clean:build'
+    'clean:build', 'uglify', 'inject_reuse', 'copy:dev', 'clean:release_zip', 'prune_deprecated', 'zip:dated', 'clean:build'
   ]);
   grunt.registerTask('deploy', [
-    'clean:build', 'uglify', 'inject_reuse', 'make_index', 'copy:deploy', 'clean:build'
+    'clean:build', 'uglify', 'inject_reuse', 'make_index', 'copy:deploy', 'prune_deprecated', 'zip:release'
   ]);
   // generate index.html locally for testing
   grunt.registerTask('test_deploy', [
