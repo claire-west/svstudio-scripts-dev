@@ -50,10 +50,17 @@ jobs:
         echo -e "Files changed in this release:\n\n* ${{ steps.changed-files-specific.outputs.all_changed_files }}" > ${{ github.workspace }}-CHANGELOG.txt
         sed -i 's/,/\n* /g' ${{ github.workspace }}-CHANGELOG.txt
 
+    - name: Delete latest release
+      uses: actions/github-script@v5
+      with:
+        github-token: ${{ secrets.RELEASE_PAT }}
+        script: |
+          await github.rest.git.deleteRef({ 'claire-west', 'svstudio-scripts', ref: 'tags/latest' })
     - name: Release archive
       uses: softprops/action-gh-release@v1
       with:
         name: Latest Release
+        tag_name: latest
         repository: claire-west/svstudio-scripts
         token: ${{ secrets.RELEASE_PAT }}
         body_path: ${{ github.workspace }}-CHANGELOG.txt
