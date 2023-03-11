@@ -55,7 +55,7 @@ jobs:
       with:
         github-token: ${{ secrets.RELEASE_PAT }}
         script: |
-          await github.rest.git.deleteRef({ 'claire-west', 'svstudio-scripts', ref: 'tags/latest' })
+          await github.rest.git.deleteRef({ owner: 'claire-west', repo: 'svstudio-scripts', ref: 'tags/latest' })
     - name: Release archive
       uses: softprops/action-gh-release@v1
       with:
