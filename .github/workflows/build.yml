@@ -40,13 +40,14 @@ jobs:
       uses: tj-actions/changed-files@v35
       with:
         since_last_remote_commit: true
+        separator: "\n* "
         files: |
           automation/**
           hotkey-scripts/**
           utility/**
     - if: steps.changed-files-specific.outputs.any_changed == 'true'
       run: |
-        echo "Files changed in this release: ${{ steps.changed-files-specific.outputs.all_changed_files }}" > ${{ github.workspace }}-CHANGELOG.txt
+        echo -e "Files changed in this release:\n\n* ${{ steps.changed-files-specific.outputs.all_changed_files }}" > ${{ github.workspace }}-CHANGELOG.txt
 
     - name: Release archive
       uses: softprops/action-gh-release@v1
