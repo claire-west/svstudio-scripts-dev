@@ -45,17 +45,17 @@ jobs:
           automation/**
           hotkey-scripts/**
           utility/**
-    - if: steps.changed-files-specific.outputs.any_changed == 'true'
-      run: |
+    - run: |
         echo -e "Files changed in this release:\n\n* ${{ steps.changed-files-specific.outputs.all_changed_files }}" > ${{ github.workspace }}-CHANGELOG.txt
         sed -i 's/,/\n* /g' ${{ github.workspace }}-CHANGELOG.txt
 
-    - name: Delete latest release
-      uses: actions/github-script@v5
+    - name: Delete previous release
+      uses: dev-drprasad/delete-tag-and-release@v0.2.0
       with:
-        github-token: ${{ secrets.RELEASE_PAT }}
-        script: |
-          await github.rest.git.deleteRef({ owner: 'claire-west', repo: 'svstudio-scripts', ref: 'tags/latest' })
+        tag_name: latest
+        repo: claire-west/svstudio-scripts
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}
     - name: Release archive
       uses: softprops/action-gh-release@v1
       with:
