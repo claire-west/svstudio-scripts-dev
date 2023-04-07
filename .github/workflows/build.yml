@@ -50,7 +50,7 @@ jobs:
         sed -i 's/,/\n* /g' ${{ github.workspace }}-CHANGELOG.txt
 
     - name: Delete previous release
-      uses: dev-drprasad/delete-tag-and-release@v0.2.0
+      uses: dev-drprasad/delete-tag-and-release@v0.2.1
       with:
         tag_name: latest
         repo: claire-west/svstudio-scripts
