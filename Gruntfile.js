@@ -89,4 +89,7 @@ module.exports = function(grunt) {
   grunt.registerTask('test_deploy', [
     'clean:build', 'uglify', 'inject_reuse', 'make_index', 'copy:deploy', 'clean:build', 'clean:deploy'
   ]);
+  grunt.registerTask('dev', [
+    'clean:build', 'uglify', 'inject_reuse', 'copy:dev', 'clean:build'
+  ]);
 };
