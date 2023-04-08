@@ -35,9 +35,9 @@ jobs:
         target-branch: main
 
     - id: changed-files
-      uses: tj-actions/changed-files@v35
+      uses: tj-actions/changed-files@v35.7.12
     - id: changed-files-specific
-      uses: tj-actions/changed-files@v35
+      uses: tj-actions/changed-files@v35.7.12
       with:
         since_last_remote_commit: true
         separator: ","
@@ -57,7 +57,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}
     - name: Release archive
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v0.1.15
       with:
         draft: false
         prerelease: false
