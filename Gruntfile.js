@@ -62,7 +62,7 @@ module.exports = function(grunt) {
     },
     compress: {
       release: {
-        cwd: 'deploy',
+        cwd: 'build',
         src: ['automation/*', 'hotkey-scripts/*.js', 'utility/*'],
         expand: true,
         options: {
