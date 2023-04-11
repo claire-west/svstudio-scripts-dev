@@ -60,16 +60,22 @@ module.exports = function(grunt) {
         expand: true
       }
     },
-    zip: {
+    compress: {
       release: {
-        cwd: 'build',
-        src: '**/*',
-        dest: 'cw-svstudio-scripts.zip'
+        cwd: 'deploy',
+        src: ['automation/*', 'hotkey-scripts/*.js', 'utility/*'],
+        expand: true,
+        options: {
+          archive: 'cw-svstudio-scripts.zip'
+        }
       },
       dated: {
         cwd: 'build',
-        src: '**/*',
-        dest: 'cw_svstudio-scripts_' + grunt.template.today('yymmdd') + '.zip'
+        src: ['automation/*', 'hotkey-scripts/*.js', 'utility/*'],
+        expand: true,
+        options: {
+          archive: 'cw_svstudio-scripts_' + grunt.template.today('yymmdd') + '.zip'
+        }
       }
     }
   });
@@ -77,13 +83,13 @@ module.exports = function(grunt) {
   grunt.loadTasks('./grunt');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-zip');
   grunt.registerTask('default', [
-    'clean:build', 'uglify', 'inject_reuse', 'copy:dev', 'clean:release_zip', 'prune_deprecated', 'zip:dated', 'clean:build'
+    'clean:build', 'uglify', 'inject_reuse', 'copy:dev', 'clean:release_zip', 'prune_deprecated', 'compress:dated', 'clean:build'
   ]);
   grunt.registerTask('deploy', [
-    'clean:build', 'uglify', 'inject_reuse', 'make_index', 'copy:deploy', 'prune_deprecated', 'zip:release'
+    'clean:build', 'uglify', 'inject_reuse', 'make_index', 'copy:deploy', 'prune_deprecated', 'compress:release'
   ]);
   // generate index.html locally for testing
   grunt.registerTask('test_deploy', [
