@@ -2,6 +2,7 @@ module.exports = function(grunt) {
   var isWindows = process.platform === 'win32';
   var regex = /SCRIPT_TITLE ?= ?[\'\"](.*)[\'\"]/g;
   var descriptionRegex = /\/\*\*.*\.js((.|\n)*)\*\//;
+  var descriptionRegexLua = /--\[\[.*\.lua((.|\n)*)--]]/;
   var deprecatedRegex = /\/\/ (deprecated as of \d.\d.\d)/;
 
   grunt.registerMultiTask('make_index', 'Builds the index.html download page', function() {
@@ -28,8 +29,9 @@ module.exports = function(grunt) {
         var fileParts = src.split('/');
         var folder = fileParts[0];
         var file = fileParts[1];
+        var extension = file.split('.').pop();
 
-        var match = fileContent.match(descriptionRegex);
+        var match = fileContent.match(descriptionRegex) || fileContent.match(descriptionRegexLua);
         var description;
         if (match) {
           description = match[1].trim().split('\n');
@@ -46,7 +48,7 @@ module.exports = function(grunt) {
           suffix = match[1];
         }
 
-        var item = '<p id="' + file.replace('.js', '') + '"><b>' + scriptName + '</b> - <i><a href="/svstudio-scripts/' + src + '" download="' + file + '">' + file + '</a></i>';
+        var item = '<p id="' + file.replace('.' + extension, '') + '"><b>' + scriptName + '</b> - <i><a href="/svstudio-scripts/' + src + '" download="' + file + '">' + file + '</a></i>';
 
         if (suffix) {
           item += '<span>&nbsp;&nbsp;(' + suffix + ')</span>';
